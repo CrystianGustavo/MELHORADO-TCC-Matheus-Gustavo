@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 List<String> fornecedores = [];
+
 final tipos = [
   'Decoração',
   'Lembrancinhas',

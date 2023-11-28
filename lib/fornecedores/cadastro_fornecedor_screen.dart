@@ -1,12 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_tcc/local_date.dart';
 import 'tipo_fornecedor.dart';
 import 'package:projeto_tcc/fornecedores/visualizar_fornecedores_screen.dart';
 
 String testeSalvamento = '';
 
-class CadastroFornecedoresScreen extends StatelessWidget {
+class CadastroFornecedoresScreen extends StatefulWidget {
+  const CadastroFornecedoresScreen({super.key});
+
+  @override
+  State<CadastroFornecedoresScreen> createState() =>
+      _CadastroFornecedoresScreenState();
+}
+
+class _CadastroFornecedoresScreenState
+    extends State<CadastroFornecedoresScreen> {
   @override
   final selectedItem = ValueNotifier('');
+  @override
+  void initState() {
+    setList();
+    super.initState();
+  }
+
+  void setList() async {
+    fornecedores = await LocalDate.getListString();
+    setState(() {});
+  }
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,8 +73,11 @@ class CadastroFornecedoresScreen extends StatelessWidget {
                   }),
 
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   fornecedores.add(selectedItem.value + ' ' + testeSalvamento);
+                  await LocalDate.salvarListaString(fornecedores);
+                  setState(() {});
+                  //setState(() {});
                   //listSalvamento.add(selectedItem.value.toString() + 'ESPAÇO' + testeSalvamento.toString());
                   print(fornecedores);
                   Navigator.pushNamed(context, '/menu_fornecedores');
