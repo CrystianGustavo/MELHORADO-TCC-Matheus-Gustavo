@@ -17,6 +17,33 @@ class _CadastroFornecedoresScreenState
     extends State<CadastroFornecedoresScreen> {
   @override
   final selectedItem = ValueNotifier('');
+  final selectedItem2 = ValueNotifier('');
+  final selectedItem3 = ValueNotifier('');
+  final selectedItem4 = ValueNotifier('');
+  final selectedItem5 = ValueNotifier('');
+  final selectedItem6 = ValueNotifier('');
+  final selectedItem7 = ValueNotifier('');
+  final selectedItem8 = ValueNotifier('');
+  final selectedItem9 = ValueNotifier('');
+  final selectedItem10 = ValueNotifier('');
+  final selectedItem11 = ValueNotifier('');
+  final selectedItem12 = ValueNotifier('');
+  final selectedItem13 = ValueNotifier('');
+  final selectedItem14 = ValueNotifier('');
+  final selectedItem15 = ValueNotifier('');
+  final selectedItem16 = ValueNotifier('');
+  final selectedItem17 = ValueNotifier('');
+  final selectedItem18 = ValueNotifier('');
+  final selectedItem19 = ValueNotifier('');
+  final selectedItem20 = ValueNotifier('');
+  final selectedItem21 = ValueNotifier('');
+  final selectedItem22 = ValueNotifier('');
+  final selectedItem23 = ValueNotifier('');
+  final selectedItem24 = ValueNotifier('');
+  final selectedItem25 = ValueNotifier('');
+  final selectedItem26 = ValueNotifier('');
+  final selectedItem27 = ValueNotifier('');
+
   @override
   void initState() {
     setList();

@@ -1,4 +1,30 @@
 class ChecklistCasamento {
+  String nomeFornecedorDecoracao;
+  String nomeFornecedorLembrancinhas;
+  String nomeFornecedorCabineDeFotos;
+  String nomeFornecedorFotografia;
+  String nomeFornecedorFilmagem;
+  String nomeFornecedorDocesFinos;
+  String nomeFornecedorCascataDeChocolate;
+  String nomeFornecedorAcai;
+  String nomeFornecedorBuffet;
+  String nomeFornecedorCoquetel;
+  String nomeFornecedorBoloFake;
+  String nomeFornecedorBoloCorte;
+  String nomeFornecedorBebidas;
+  String nomeFornecedorChopp;
+  String nomeFornecedorDJ;
+  String nomeFornecedorBartender;
+  String nomeFornecedorPista;
+  String nomeFornecedorMaquiagem;
+  String nomeFornecedorPenteado;
+  String nomeFornecedorVestido;
+  String nomeFornecedorPlaquinhas;
+  String nomeFornecedorPortaAlianca;
+  String nomeFornecedorCestaFlorista;
+  String nomeFornecedorCarroNoiva;
+  String nomeFornecedorTrajeNoivo;
+
   //Decoração
   bool decoracao;
   String fornecedorDecoracao;
@@ -96,12 +122,14 @@ class ChecklistCasamento {
   bool espatulaDecoracao;
   bool espatulaBuffet;
   bool espatulaNoiva;
+  String espatulaSelecionada;
 
   //Tacas Brinde
   bool tacasBrinde;
   bool tacasDecoracao;
   bool tacasBuffet;
   bool tacasNoiva;
+  String tacasSelecionada;
 
   //Bebidas
   bool bebidas;
@@ -122,7 +150,7 @@ class ChecklistCasamento {
 
   //Dj
   bool dj;
-  String forncedorDJ;
+  String fornecedorDJ;
   String telefoneFornecedorDJ;
   double valorDJ;
   bool iluminacao;
@@ -145,6 +173,7 @@ class ChecklistCasamento {
 
   //Entretenimentos
   bool entretenimentos;
+  String fornecedorEntretenimentos;
 
   //Maquiagem
   bool maquiagem;
@@ -226,6 +255,7 @@ class ChecklistCasamento {
   ChecklistCasamento({
     //Decoração
     required this.decoracao,
+    required this.nomeFornecedorDecoracao,
     required this.fornecedorDecoracao,
     required this.telefoneFornecedorDecoracao,
     required this.valorDecoracao,
@@ -347,7 +377,7 @@ class ChecklistCasamento {
 
     //DJ
     required this.dj,
-    required this.forncedorDJ,
+    required this.fornecedorDJ,
     required this.telefoneFornecedorDJ,
     required this.valorDJ,
     required this.iluminacao,
@@ -370,6 +400,7 @@ class ChecklistCasamento {
 
     //Entretenimentos
     required this.entretenimentos,
+    required this.fornecedorEntretenimentos,
 
     //Maquiagem
     required this.maquiagem,
@@ -446,5 +477,216 @@ class ChecklistCasamento {
     required this.quantidadeConvites,
     required this.dataProvavelEntregaConvite,
     required this.dataProvavelConfirmacao,
+    required this.nomeFornecedorLembrancinhas,
+    required this.nomeFornecedorCabineDeFotos,
+    required this.nomeFornecedorFotografia,
+    required this.nomeFornecedorFilmagem,
+    required this.nomeFornecedorDocesFinos,
+    required this.nomeFornecedorCascataDeChocolate,
+    required this.nomeFornecedorAcai,
+    required this.nomeFornecedorBuffet,
+    required this.nomeFornecedorCoquetel,
+    required this.nomeFornecedorBoloFake,
+    required this.nomeFornecedorBoloCorte,
+    required this.nomeFornecedorBebidas,
+    required this.nomeFornecedorChopp,
+    required this.nomeFornecedorDJ,
+    required this.nomeFornecedorBartender,
+    required this.nomeFornecedorPista,
+    required this.nomeFornecedorMaquiagem,
+    required this.nomeFornecedorPenteado,
+    required this.nomeFornecedorVestido,
+    required this.nomeFornecedorPlaquinhas,
+    required this.nomeFornecedorPortaAlianca,
+    required this.nomeFornecedorCestaFlorista,
+    required this.nomeFornecedorCarroNoiva,
+    required this.nomeFornecedorTrajeNoivo,
+    required this.espatulaSelecionada,
+    required this.tacasSelecionada,
   });
+
+  /*ChecklistCasamento.fromJson(Map<String, dynamic> json)
+      : telefoneFornecedorDecoracao = json['telefoneFornecedorDecoracao'],
+        fornecedorDecoracao = json['fornecedorDecoracao''];*/
+
+  Map<String, dynamic> toJson() {
+    return {
+      'dataEvento': dataEvento,
+      'localCerimonia': localCerimonia,
+      'localRecepcao': localRecepcao,
+      'horaInicioCerimonia': horaInicioCerimonia,
+      'numeroDeConvidados': numeroDeConvidados,
+      'quantidadeConvites': quantidadeConvites,
+      'dataProvavelEntregaConvite': dataProvavelEntregaConvite,
+      'dataProvavelConfirmacao': dataProvavelConfirmacao,
+      'nomeFornecedorDecoracao': nomeFornecedorDecoracao,
+      'telefoneFornecedorDecoracao': telefoneFornecedorDecoracao,
+      'fornecedorDecoracao': fornecedorDecoracao,
+      'nomeFornecedorLembrancinhas': nomeFornecedorLembrancinhas,
+      'telefoneFornecedorLembrancinhas': telefoneFornecedorLembrancinhas,
+      'fornecedorLembrancinhas': fornecedorLembrancinhas,
+      'nomeFornecedorCabineDeFotos': nomeFornecedorCabineDeFotos,
+      'telefoneFornecedorCabineDeFotos': telefoneFornecedorCabineDeFotos,
+      'fornecedorCabineDeFotos': fornecedorCabineDeFotos,
+      'nomeFornecedorFotografia': nomeFornecedorFotografia,
+      'telefoneFornecedorFotografia': telefoneFornecedorFotografia,
+      'fornecedorFotografia': fornecedorFotografia,
+      'nomeFornecedorFilmagem': nomeFornecedorFilmagem,
+      'telefoneFornecedorFilmagem': telefoneFornecedorFilmagem,
+      'fornecedorFilmagem': fornecedorFilmagem,
+      'nomeFornecedorDocesFinos': nomeFornecedorDocesFinos,
+      'telefoneFornecedorDocesFinos': telefoneFornecedorDocesFinos,
+      'fornecedorDocesFinos': fornecedorDocesFinos,
+      'nomeFornecedorCascataDeChocolate': nomeFornecedorCascataDeChocolate,
+      'telefoneFornecedorCascata': telefoneFornecedorCascata,
+      'fornecedorCascata': fornecedorCascata,
+      'nomeFornecedorAcai': nomeFornecedorAcai,
+      'telefoneFornecedorAcai': telefoneFornecedorAcai,
+      'fornecedorAcai': fornecedorAcai,
+      'nomeFornecedorBuffet': nomeFornecedorBuffet,
+      'telefoneFornecedorBuffet': telefoneFornecedorBuffet,
+      'fornecedorBuffet': fornecedorBuffet,
+      'nomeFornecedorCoquetel': nomeFornecedorCoquetel,
+      'telefoneFornecedorCoquetel': telefoneFornecedorCoquetel,
+      'fornecedorCoquetel': fornecedorCoquetel,
+      'nomeFornecedorBoloFake': nomeFornecedorBoloFake,
+      'telefoneFornecedorBoloFake': telefoneFornecedorBoloFake,
+      'fornecedorBoloFake': fornecedorBoloFake,
+      'nomeFornecedorBoloCorte': nomeFornecedorBoloCorte,
+      'telefoneFornecedorBoloCorte': telefoneFornecedorBoloCorte,
+      'fornecedorBoloCorte': fornecedorBoloCorte,
+      'espatulaSelecionada': espatulaSelecionada,
+      'tacasSelecionada': tacasSelecionada,
+      'nomeFornecedorBebidas': nomeFornecedorBebidas,
+      'telefoneFornecedorBebidas': telefoneFornecedorBebidas,
+      'fornecedorBebidas': fornecedorBebidas,
+      'nomeFornecedorChopp': nomeFornecedorChopp,
+      'telefoneFornecedorChopp': telefoneFornecedorChopp,
+      'fornecedorChopp': fornecedorChopp,
+      'nomeFornecedorDJ': nomeFornecedorDJ,
+      'telefoneFornecedorDJ': telefoneFornecedorDJ,
+      'fornecedorDJ': fornecedorDJ,
+      'nomeFornecedorBartender': nomeFornecedorBartender,
+      'telefoneFornecedorBartander': telefoneFornecedorBartander,
+      'fornecedorBartander': fornecedorBartander,
+      'nomeFornecedorPista': nomeFornecedorPista,
+      'telefoneFornecedorPista': telefoneFornecedorPista,
+      'fornecedorPista': fornecedorPista,
+      'entretenimentos': entretenimentos,
+      'nomeFornecedorMaquiagem': nomeFornecedorMaquiagem,
+      'telefoneFornecedorMaquiagem': telefoneFornecedorMaquiagem,
+      'fornecedorMaquiagem': fornecedorMaquiagem,
+      'nomeFornecedorPenteado': nomeFornecedorPenteado,
+      'telefoneFornecedorPenteado': telefoneFornecedorPenteado,
+      'fornecedorPenteado': fornecedorPenteado,
+      'nomeFornecedorVestido': nomeFornecedorVestido,
+      'telefoneFornecedorVestido': telefoneFornecedorVestido,
+      'fornecedorVestido': fornecedorVestido,
+      'nomeFornecedorPlaquinhas': nomeFornecedorPlaquinhas,
+      'telefoneFornecedorPlaquinhas': telefoneFornecedorPlaquinhas,
+      'fornecedorPlaquinhas': fornecedorPlaquinhas,
+      'nomeFornecedorPortaAlianca': nomeFornecedorPortaAlianca,
+      'telefoneFornecedorPortaAlianca': telefoneFornecedorPortaAlianca,
+      'fornecedorPortaAlianca': fornecedorPortaAlianca,
+      'nomeFornecedorCestaFlorista': nomeFornecedorCestaFlorista,
+      'telefoneFornecedorCestaFlorista': telefoneFornecedorCestaFlorista,
+      'fornecedorCestaFlorista': fornecedorCestaFlorista,
+      'nomeFornecedorCarroNoiva': nomeFornecedorCarroNoiva,
+      'telefoneFornecedorCarroNoiva': telefoneFornecedorCarroNoiva,
+      'fornecedorCarroNoiva': fornecedorCarroNoiva,
+      'nomeFornecedorCarroTrajeNoivo': nomeFornecedorTrajeNoivo,
+      'telefoneFornecedorTrajeNoivo': telefoneFornecedorTrajeNoivo,
+      'fornecedorTrajeNoivo': fornecedorTrajeNoivo,
+    };
+  }
+
+  /*ChecklistCasamento.fromJson(Map<String, dynamic> json) {
+    dataEvento = json['	dataEvento	'];
+    localCerimonia = json['	localCerimonia	'];
+    localRecepcao = json['	localRecepcao	'];
+    horaInicioCerimonia = json['	horaInicioCerimonia	'];
+    numeroDeConvidados = json['	numeroDeConvidados	'];
+    quantidadeConvites = json['	quantidadeConvites	'];
+    dataProvavelEntregaConvite = json['	dataProvavelEntregaConvite	'];
+    dataProvavelConfirmacao = json['	dataProvavelConfirmacao	'];
+    nomeFornecedorDecoracao = json['	nomeFornecedorDecoracao	'];
+    telefoneFornecedorDecoracao = json['	telefoneFornecedorDecoracao	'];
+    fornecedorDecoracao = json['	fornecedorDecoracao	'];
+    nomeFornecedorLembrancinhas = json['	nomeFornecedorLembrancinhas	'];
+    telefoneFornecedorLembrancinhas = json['	telefoneFornecedorLembrancinhas	'];
+    fornecedorLembrancinhas = json['	fornecedorLembrancinhas	'];
+    nomeFornecedorCabineDeFotos = json['	nomeFornecedorCabineDeFotos	'];
+    telefoneFornecedorCabineDeFotos = json['	telefoneFornecedorCabineDeFotos	'];
+    fornecedorCabineDeFotos = json['	fornecedorCabineDeFotos	'];
+    nomeFornecedorFotografia = json['	nomeFornecedorFotografia	'];
+    telefoneFornecedorFotografia = json['	telefoneFornecedorFotografia	'];
+    fornecedorFotografia = json['	fornecedorFotografia	'];
+    nomeFornecedorFilmagem = json['	nomeFornecedorFilmagem	'];
+    telefoneFornecedorFilmagem = json['	telefoneFornecedorFilmagem	'];
+    fornecedorFilmagem = json['	fornecedorFilmagem	'];
+    nomeFornecedorDocesFinos = json['	nomeFornecedorDocesFinos	'];
+    telefoneFornecedorDocesFinos = json['	telefoneFornecedorDocesFinos	'];
+    fornecedorDocesFinos = json['	fornecedorDocesFinos	'];
+    nomeFornecedorCascataDeChocolate =
+        json['	nomeFornecedorCascataDeChocolate	'];
+    telefoneFornecedorCascata = json['	telefoneFornecedorCascata	'];
+    fornecedorCascata = json['	fornecedorCascata	'];
+    nomeFornecedorAcai = json['	nomeFornecedorAcai	'];
+    telefoneFornecedorAcai = json['	telefoneFornecedorAcai	'];
+    fornecedorAcai = json['	fornecedorAcai	'];
+    nomeFornecedorBuffet = json['	nomeFornecedorBuffet	'];
+    telefoneFornecedorBuffet = json['	telefoneFornecedorBuffet	'];
+    fornecedorBuffet = json['	fornecedorBuffet	'];
+    nomeFornecedorCoquetel = json['	nomeFornecedorCoquetel	'];
+    telefoneFornecedorCoquetel = json['	telefoneFornecedorCoquetel	'];
+    fornecedorCoquetel = json['	fornecedorCoquetel	'];
+    nomeFornecedorBoloFake = json['	nomeFornecedorBoloFake	'];
+    telefoneFornecedorBoloFake = json['	telefoneFornecedorBoloFake	'];
+    fornecedorBoloFake = json['	fornecedorBoloFake	'];
+    nomeFornecedorBoloCorte = json['	nomeFornecedorBoloCorte	'];
+    telefoneFornecedorBoloCorte = json['	telefoneFornecedorBoloCorte	'];
+    fornecedorBoloCorte = json['	fornecedorBoloCorte	'];
+    espatulaSelecionada = json['	espatulaSelecionada	'];
+    tacasSelecionada = json['	tacasSelecionada	'];
+    nomeFornecedorBebidas = json['	nomeFornecedorBebidas	'];
+    telefoneFornecedorBebidas = json['	telefoneFornecedorBebidas	'];
+    fornecedorBebidas = json['	fornecedorBebidas	'];
+    nomeFornecedorChopp = json['	nomeFornecedorChopp	'];
+    telefoneFornecedorChopp = json['	telefoneFornecedorChopp	'];
+    fornecedorChopp = json['	fornecedorChopp	'];
+    nomeFornecedorDJ = json['	nomeFornecedorDJ	'];
+    telefoneFornecedorDJ = json['	telefoneFornecedorDJ	'];
+    fornecedorDJ = json['	fornecedorDJ	'];
+    nomeFornecedorBartender = json['	nomeFornecedorBartender	'];
+    telefoneFornecedorBartander = json['	telefoneFornecedorBartander	'];
+    fornecedorBartander = json['	fornecedorBartander	'];
+    nomeFornecedorPista = json['	nomeFornecedorPista	'];
+    telefoneFornecedorPista = json['	telefoneFornecedorPista	'];
+    fornecedorPista = json['	fornecedorPista	'];
+    entretenimentos = json['	entretenimentos	'];
+    nomeFornecedorMaquiagem = json['	nomeFornecedorMaquiagem	'];
+    telefoneFornecedorMaquiagem = json['	telefoneFornecedorMaquiagem	'];
+    fornecedorMaquiagem = json['	fornecedorMaquiagem	'];
+    nomeFornecedorPenteado = json['	nomeFornecedorPenteado	'];
+    telefoneFornecedorPenteado = json['	telefoneFornecedorPenteado	'];
+    fornecedorPenteado = json['	fornecedorPenteado	'];
+    nomeFornecedorVestido = json['	nomeFornecedorVestido	'];
+    telefoneFornecedorVestido = json['	telefoneFornecedorVestido	'];
+    fornecedorVestido = json['	fornecedorVestido	'];
+    nomeFornecedorPlaquinhas = json['	nomeFornecedorPlaquinhas	'];
+    telefoneFornecedorPlaquinhas = json['	telefoneFornecedorPlaquinhas	'];
+    fornecedorPlaquinhas = json['	fornecedorPlaquinhas	'];
+    nomeFornecedorPortaAlianca = json['	nomeFornecedorPortaAlianca	'];
+    telefoneFornecedorPortaAlianca = json['	telefoneFornecedorPortaAlianca	'];
+    fornecedorPortaAlianca = json['	fornecedorPortaAlianca	'];
+    nomeFornecedorCestaFlorista = json['	nomeFornecedorCestaFlorista	'];
+    telefoneFornecedorCestaFlorista = json['	telefoneFornecedorCestaFlorista	'];
+    fornecedorCestaFlorista = json['	fornecedorCestaFlorista	'];
+    nomeFornecedorCarroNoiva = json['	nomeFornecedorCarroNoiva	'];
+    telefoneFornecedorCarroNoiva = json['	telefoneFornecedorCarroNoiva	'];
+    fornecedorCarroNoiva = json['	fornecedorCarroNoiva	'];
+    nomeFornecedorTrajeNoivo = json['	nomeFornecedorTrajeNoivo	'];
+    telefoneFornecedorTrajeNoivo = json['	telefoneFornecedorTrajeNoivo	'];
+    fornecedorTrajeNoivo = json['	fornecedorTrajeNoivo	'];
+  }*/
 }

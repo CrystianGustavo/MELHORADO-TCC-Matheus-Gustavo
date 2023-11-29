@@ -1,4 +1,21 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:projeto_tcc/eventos/checklist_casamento.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+loadData() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  String? json = prefs.getString('TestChecklist_Key');
+
+  if (json == null) {
+  } else {
+    Map<String, dynamic> map = jsonDecode(json);
+    print('map $map');
+    //final checklistCasamento = ChecklistCasamento.fromJson(map);
+  }
+}
 
 class MenuEventosScreen extends StatelessWidget {
   @override
@@ -31,7 +48,7 @@ class MenuEventosScreen extends StatelessWidget {
             SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                // Implemente ação para visualizar eventos
+                loadData(); // Implemente ação para visualizar eventos
               },
               style: ElevatedButton.styleFrom(
                 fixedSize: Size(200, 50),
@@ -41,9 +58,7 @@ class MenuEventosScreen extends StatelessWidget {
             ),
             SizedBox(height: 16),
             ElevatedButton(
-              onPressed: () {
-                // Implemente ação para alterar evento
-              },
+              onPressed: () {},
               style: ElevatedButton.styleFrom(
                 fixedSize: Size(200, 50),
                 // Adicione mais estilos conforme necessário

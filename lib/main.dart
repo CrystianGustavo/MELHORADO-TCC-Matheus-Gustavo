@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'eventos/checklist_casamento.dart';
 import 'telas/welcome_screen.dart';
 import 'package:projeto_tcc/convidados/menu_convidados_screen.dart';
@@ -42,7 +45,36 @@ class MyApp extends StatelessWidget {
   }
 }
 
+final selectedItem = ValueNotifier('');
+final selectedItem2 = ValueNotifier('');
+final selectedItem3 = ValueNotifier('');
+final selectedItem4 = ValueNotifier('');
+final selectedItem5 = ValueNotifier('');
+final selectedItem6 = ValueNotifier('');
+final selectedItem7 = ValueNotifier('');
+final selectedItem8 = ValueNotifier('');
+final selectedItem9 = ValueNotifier('');
+final selectedItem10 = ValueNotifier('');
+final selectedItem11 = ValueNotifier('');
+final selectedItem12 = ValueNotifier('');
+final selectedItem13 = ValueNotifier('');
+final selectedItem14 = ValueNotifier('');
+final selectedItem15 = ValueNotifier('');
+final selectedItem16 = ValueNotifier('');
+final selectedItem17 = ValueNotifier('');
+final selectedItem18 = ValueNotifier('');
+final selectedItem19 = ValueNotifier('');
+final selectedItem20 = ValueNotifier('');
+final selectedItem21 = ValueNotifier('');
+final selectedItem22 = ValueNotifier('');
+final selectedItem23 = ValueNotifier('');
+final selectedItem24 = ValueNotifier('');
+final selectedItem25 = ValueNotifier('');
+final selectedItem26 = ValueNotifier('');
+final selectedItem27 = ValueNotifier('');
 String testeSalvamento = '';
+
+final selecao = ['Decoração', 'Buffet', 'Noiva'];
 
 //List<String> listSalvamento = <String>[];
 
@@ -114,8 +146,36 @@ class ChecklistCasamentoScreen extends StatefulWidget {
 
 class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
   final ChecklistCasamento checklist = ChecklistCasamento(
+    nomeFornecedorLembrancinhas: '',
+    nomeFornecedorCabineDeFotos: '',
+    nomeFornecedorFotografia: '',
+    nomeFornecedorFilmagem: '',
+    nomeFornecedorDocesFinos: '',
+    nomeFornecedorCascataDeChocolate: '',
+    nomeFornecedorAcai: '',
+    nomeFornecedorBuffet: '',
+    nomeFornecedorCoquetel: '',
+    nomeFornecedorBoloFake: '',
+    nomeFornecedorBoloCorte: '',
+    nomeFornecedorBebidas: '',
+    nomeFornecedorChopp: '',
+    nomeFornecedorDJ: '',
+    nomeFornecedorBartender: '',
+    nomeFornecedorPista: '',
+    nomeFornecedorMaquiagem: '',
+    nomeFornecedorPenteado: '',
+    nomeFornecedorVestido: '',
+    nomeFornecedorPlaquinhas: '',
+    nomeFornecedorPortaAlianca: '',
+    nomeFornecedorCestaFlorista: '',
+    nomeFornecedorCarroNoiva: '',
+    nomeFornecedorTrajeNoivo: '',
+    espatulaSelecionada: '',
+    tacasSelecionada: '',
+
     //Decoração
     decoracao: false,
+    nomeFornecedorDecoracao: '',
     fornecedorDecoracao: '',
     telefoneFornecedorDecoracao: '',
     valorDecoracao: 0.0,
@@ -237,7 +297,7 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
 
     //DJ
     dj: false,
-    forncedorDJ: '',
+    fornecedorDJ: '',
     telefoneFornecedorDJ: '',
     valorDJ: 0.0,
     iluminacao: false,
@@ -260,6 +320,7 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
 
     //Entretenimentos
     entretenimentos: false,
+    fornecedorEntretenimentos: '',
     //kitsTematicos: false,
 
     //Maquiagem
@@ -338,6 +399,29 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
     dataProvavelEntregaConvite: '',
     dataProvavelConfirmacao: '',
   );
+
+  saveData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    final testChecklist = checklist;
+
+    String json = jsonEncode(testChecklist);
+    print('Generated json $json');
+    prefs.setString('TestChecklist_Key', json);
+  }
+
+  /*loadData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String? json = prefs.getString('TestChecklist_Key');
+
+    if (json == null) {
+    } else {
+      Map<String, dynamic> map = jsonDecode(json);
+      print('map $map');
+      //final checklistCasamento = ChecklistCasamento.fromJson(map);
+    }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -428,17 +512,32 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
               ),
               if (checklist.decoracao)
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: EdgeInsets.symmetric(horizontal: 10.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.fornecedorDecoracao = value;
-                        },
-                        decoration:
-                            InputDecoration(labelText: 'Nome do Fornecedor'),
-                      ),
+                      ValueListenableBuilder(
+                          valueListenable: selectedItem,
+                          builder: (BuildContext context, String value, _) {
+                            checklist.nomeFornecedorDecoracao =
+                                selectedItem.value.toString();
+                            checklist.nomeFornecedorDecoracao =
+                                selectedItem.value.toString();
+                            return DropdownButton<String>(
+                              hint: const Text('Selecione o fornecedor'),
+                              value: (value.isEmpty) ? null : value,
+                              onChanged: (escolha) =>
+                                  selectedItem.value = escolha.toString(),
+                              items: fornecedores
+                                  .map(
+                                    (opcao) => DropdownMenuItem(
+                                      value: opcao,
+                                      child: Text(opcao),
+                                    ),
+                                  )
+                                  .toList(),
+                            );
+                          }),
                       TextFormField(
                         onChanged: (value) {
                           checklist.telefoneFornecedorDecoracao = value;
@@ -446,16 +545,26 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
                         decoration: InputDecoration(
                             labelText: 'Telefone do Fornecedor'),
                       ),
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.valorDecoracao =
-                              double.tryParse(value) ?? 0.0;
-                        },
-                        keyboardType: TextInputType.number,
-                        decoration:
-                            InputDecoration(labelText: 'Valor do Serviço'),
+                      SizedBox(height: 20),
+                      SizedBox(
+                        height: 200,
+                        width: double.infinity,
+                        child: TextFormField(
+                          onChanged: (value) {
+                            checklist.fornecedorDecoracao = value;
+                          },
+                          decoration: InputDecoration(
+                            filled: true,
+                            labelText: 'Observações sobre o serviço',
+                            border: OutlineInputBorder(),
+                            //contentPadding: EdgeInsets.symmetric(vertical: 100),
+                          ),
+                          maxLines: null,
+                          textAlignVertical: TextAlignVertical.top,
+                          expands: true,
+                        ),
                       ),
-                      CheckboxListTile(
+                      /*CheckboxListTile(
                         title: Text('Buquê'),
                         value: checklist.buque,
                         onChanged: (value) {
@@ -481,7 +590,7 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
                             checklist.petalas = value ?? false;
                           });
                         },
-                      ),
+                      ),*/
                     ],
                   ),
                 ),
@@ -498,17 +607,31 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
               ),
               if (checklist.lembrancinhas)
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: EdgeInsets.symmetric(horizontal: 10.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.fornecedorLembrancinhas = value;
-                        },
-                        decoration:
-                            InputDecoration(labelText: 'Nome do Fornecedor'),
-                      ),
+                      ValueListenableBuilder(
+                          valueListenable: selectedItem2,
+                          builder: (BuildContext context, String value, _) {
+                            checklist.nomeFornecedorLembrancinhas =
+                                selectedItem.value.toString();
+                            return DropdownButton<String>(
+                              hint: const Text('Selecione o fornecedor'),
+                              value: (value.isEmpty) ? null : value,
+                              onChanged: (escolha) =>
+                                  selectedItem2.value = escolha.toString(),
+                              items: fornecedores
+                                  .map(
+                                    (opcao) => DropdownMenuItem(
+                                      value: opcao,
+                                      child: Text(opcao),
+                                    ),
+                                  )
+                                  .toList(),
+                            );
+                            //testeSalvamento = testeSalvamento + selectedItem.toString();
+                          }),
                       TextFormField(
                         onChanged: (value) {
                           checklist.telefoneFornecedorLembrancinhas = value;
@@ -516,14 +639,24 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
                         decoration: InputDecoration(
                             labelText: 'Telefone do Fornecedor'),
                       ),
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.valorLembrancinhas =
-                              double.tryParse(value) ?? 0.0;
-                        },
-                        keyboardType: TextInputType.number,
-                        decoration:
-                            InputDecoration(labelText: 'Valor do Serviço'),
+                      SizedBox(height: 20),
+                      SizedBox(
+                        height: 200,
+                        width: double.infinity,
+                        child: TextFormField(
+                          onChanged: (value) {
+                            checklist.fornecedorLembrancinhas = value;
+                          },
+                          decoration: InputDecoration(
+                            filled: true,
+                            labelText: 'Observações sobre o serviço',
+                            border: OutlineInputBorder(),
+                            //contentPadding: EdgeInsets.symmetric(vertical: 100),
+                          ),
+                          maxLines: null,
+                          textAlignVertical: TextAlignVertical.top,
+                          expands: true,
+                        ),
                       ),
                     ],
                   ),
@@ -540,17 +673,31 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
               ),
               if (checklist.cabineDeFotos)
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: EdgeInsets.symmetric(horizontal: 10.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.fornecedorCabineDeFotos = value;
-                        },
-                        decoration:
-                            InputDecoration(labelText: 'Nome do Fornecedor'),
-                      ),
+                      ValueListenableBuilder(
+                          valueListenable: selectedItem3,
+                          builder: (BuildContext context, String value, _) {
+                            checklist.nomeFornecedorCabineDeFotos =
+                                selectedItem.value.toString();
+                            return DropdownButton<String>(
+                              hint: const Text('Selecione o fornecedor'),
+                              value: (value.isEmpty) ? null : value,
+                              onChanged: (escolha) =>
+                                  selectedItem3.value = escolha.toString(),
+                              items: fornecedores
+                                  .map(
+                                    (opcao) => DropdownMenuItem(
+                                      value: opcao,
+                                      child: Text(opcao),
+                                    ),
+                                  )
+                                  .toList(),
+                            );
+                            //testeSalvamento = testeSalvamento + selectedItem.toString();
+                          }),
                       TextFormField(
                         onChanged: (value) {
                           checklist.telefoneFornecedorCabineDeFotos = value;
@@ -558,14 +705,24 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
                         decoration: InputDecoration(
                             labelText: 'Telefone do Fornecedor'),
                       ),
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.valorCabineDeFotos =
-                              double.tryParse(value) ?? 0.0;
-                        },
-                        keyboardType: TextInputType.number,
-                        decoration:
-                            InputDecoration(labelText: 'Valor do Serviço'),
+                      SizedBox(height: 20),
+                      SizedBox(
+                        height: 200,
+                        width: double.infinity,
+                        child: TextFormField(
+                          onChanged: (value) {
+                            checklist.fornecedorCabineDeFotos = value;
+                          },
+                          decoration: InputDecoration(
+                            filled: true,
+                            labelText: 'Observações sobre o serviço',
+                            border: OutlineInputBorder(),
+                            //contentPadding: EdgeInsets.symmetric(vertical: 100),
+                          ),
+                          maxLines: null,
+                          textAlignVertical: TextAlignVertical.top,
+                          expands: true,
+                        ),
                       ),
                     ],
                   ),
@@ -588,17 +745,31 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
               ),
               if (checklist.fotografia)
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: EdgeInsets.symmetric(horizontal: 10.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.fornecedorFotografia = value;
-                        },
-                        decoration:
-                            InputDecoration(labelText: 'Nome do Fornecedor'),
-                      ),
+                      ValueListenableBuilder(
+                          valueListenable: selectedItem4,
+                          builder: (BuildContext context, String value, _) {
+                            checklist.nomeFornecedorFotografia =
+                                selectedItem.value.toString();
+                            return DropdownButton<String>(
+                              hint: const Text('Selecione o fornecedor'),
+                              value: (value.isEmpty) ? null : value,
+                              onChanged: (escolha) =>
+                                  selectedItem4.value = escolha.toString(),
+                              items: fornecedores
+                                  .map(
+                                    (opcao) => DropdownMenuItem(
+                                      value: opcao,
+                                      child: Text(opcao),
+                                    ),
+                                  )
+                                  .toList(),
+                            );
+                            //testeSalvamento = testeSalvamento + selectedItem.toString();
+                          }),
                       TextFormField(
                         onChanged: (value) {
                           checklist.telefoneFornecedorFotografia = value;
@@ -606,41 +777,24 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
                         decoration: InputDecoration(
                             labelText: 'Telefone do Fornecedor'),
                       ),
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.valorFotografia =
-                              double.tryParse(value) ?? 0.0;
-                        },
-                        keyboardType: TextInputType.number,
-                        decoration:
-                            InputDecoration(labelText: 'Valor do Serviço'),
-                      ),
-                      CheckboxListTile(
-                        title: Text('Pré-Wedding'),
-                        value: checklist.preWedding,
-                        onChanged: (value) {
-                          setState(() {
-                            checklist.preWedding = value ?? false;
-                          });
-                        },
-                      ),
-                      CheckboxListTile(
-                        title: Text('Making Of Noiva'),
-                        value: checklist.makingOfNoiva,
-                        onChanged: (value) {
-                          setState(() {
-                            checklist.makingOfNoiva = value ?? false;
-                          });
-                        },
-                      ),
-                      CheckboxListTile(
-                        title: Text('Making Of Noivo'),
-                        value: checklist.makingOfNoivo,
-                        onChanged: (value) {
-                          setState(() {
-                            checklist.makingOfNoivo = value ?? false;
-                          });
-                        },
+                      SizedBox(height: 20),
+                      SizedBox(
+                        height: 200,
+                        width: double.infinity,
+                        child: TextFormField(
+                          onChanged: (value) {
+                            checklist.fornecedorFotografia = value;
+                          },
+                          decoration: InputDecoration(
+                            filled: true,
+                            labelText: 'Observações sobre o serviço',
+                            border: OutlineInputBorder(),
+                            //contentPadding: EdgeInsets.symmetric(vertical: 100),
+                          ),
+                          maxLines: null,
+                          textAlignVertical: TextAlignVertical.top,
+                          expands: true,
+                        ),
                       ),
                     ],
                   ),
@@ -658,17 +812,31 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
               ),
               if (checklist.filmagem)
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: EdgeInsets.symmetric(horizontal: 10.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.fornecedorFilmagem = value;
-                        },
-                        decoration:
-                            InputDecoration(labelText: 'Nome do Fornecedor'),
-                      ),
+                      ValueListenableBuilder(
+                          valueListenable: selectedItem5,
+                          builder: (BuildContext context, String value, _) {
+                            checklist.nomeFornecedorFilmagem =
+                                selectedItem.value.toString();
+                            return DropdownButton<String>(
+                              hint: const Text('Selecione o fornecedor'),
+                              value: (value.isEmpty) ? null : value,
+                              onChanged: (escolha) =>
+                                  selectedItem5.value = escolha.toString(),
+                              items: fornecedores
+                                  .map(
+                                    (opcao) => DropdownMenuItem(
+                                      value: opcao,
+                                      child: Text(opcao),
+                                    ),
+                                  )
+                                  .toList(),
+                            );
+                            //testeSalvamento = testeSalvamento + selectedItem.toString();
+                          }),
                       TextFormField(
                         onChanged: (value) {
                           checklist.telefoneFornecedorFilmagem = value;
@@ -676,14 +844,24 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
                         decoration: InputDecoration(
                             labelText: 'Telefone do Fornecedor'),
                       ),
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.valorFilmagem =
-                              double.tryParse(value) ?? 0.0;
-                        },
-                        keyboardType: TextInputType.number,
-                        decoration:
-                            InputDecoration(labelText: 'Valor do Serviço'),
+                      SizedBox(height: 20),
+                      SizedBox(
+                        height: 200,
+                        width: double.infinity,
+                        child: TextFormField(
+                          onChanged: (value) {
+                            checklist.fornecedorFilmagem = value;
+                          },
+                          decoration: InputDecoration(
+                            filled: true,
+                            labelText: 'Observações sobre o serviço',
+                            border: OutlineInputBorder(),
+                            //contentPadding: EdgeInsets.symmetric(vertical: 100),
+                          ),
+                          maxLines: null,
+                          textAlignVertical: TextAlignVertical.top,
+                          expands: true,
+                        ),
                       ),
                     ],
                   ),
@@ -705,17 +883,31 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
               ),
               if (checklist.docesFinos)
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: EdgeInsets.symmetric(horizontal: 10.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.fornecedorDocesFinos = value;
-                        },
-                        decoration:
-                            InputDecoration(labelText: 'Nome do Fornecedor'),
-                      ),
+                      ValueListenableBuilder(
+                          valueListenable: selectedItem6,
+                          builder: (BuildContext context, String value, _) {
+                            checklist.nomeFornecedorDocesFinos =
+                                selectedItem.value.toString();
+                            return DropdownButton<String>(
+                              hint: const Text('Selecione o fornecedor'),
+                              value: (value.isEmpty) ? null : value,
+                              onChanged: (escolha) =>
+                                  selectedItem6.value = escolha.toString(),
+                              items: fornecedores
+                                  .map(
+                                    (opcao) => DropdownMenuItem(
+                                      value: opcao,
+                                      child: Text(opcao),
+                                    ),
+                                  )
+                                  .toList(),
+                            );
+                            //testeSalvamento = testeSalvamento + selectedItem.toString();
+                          }),
                       TextFormField(
                         onChanged: (value) {
                           checklist.telefoneFornecedorDocesFinos = value;
@@ -723,36 +915,25 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
                         decoration: InputDecoration(
                             labelText: 'Telefone do Fornecedor'),
                       ),
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.valorDocesFinos =
-                              double.tryParse(value) ?? 0.0;
-                        },
-                        keyboardType: TextInputType.number,
-                        decoration:
-                            InputDecoration(labelText: 'Valor do Serviço'),
+                      SizedBox(height: 20),
+                      SizedBox(
+                        height: 200,
+                        width: double.infinity,
+                        child: TextFormField(
+                          onChanged: (value) {
+                            checklist.fornecedorDocesFinos = value;
+                          },
+                          decoration: InputDecoration(
+                            filled: true,
+                            labelText: 'Observações sobre o serviço',
+                            border: OutlineInputBorder(),
+                            //contentPadding: EdgeInsets.symmetric(vertical: 100),
+                          ),
+                          maxLines: null,
+                          textAlignVertical: TextAlignVertical.top,
+                          expands: true,
+                        ),
                       ),
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.quantidade = false;
-                        },
-                        decoration: InputDecoration(labelText: 'Quantidade'),
-                      ),
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.horarioDeEntrega = false;
-                        },
-                        decoration:
-                            InputDecoration(labelText: 'Horário de Entrega'),
-                      ),
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.arrumacaoNaMesa = false;
-                        },
-                        decoration:
-                            InputDecoration(labelText: 'Arrumação na Mesa'),
-                      ),
-                      /*Falta colocar aqui os campos de horário entrega e arrumação na mesa*/
                     ],
                   ),
                 ),
@@ -769,17 +950,31 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
               ),
               if (checklist.cascata)
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: EdgeInsets.symmetric(horizontal: 10.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.fornecedorCascata = value;
-                        },
-                        decoration:
-                            InputDecoration(labelText: 'Nome do Fornecedor'),
-                      ),
+                      ValueListenableBuilder(
+                          valueListenable: selectedItem7,
+                          builder: (BuildContext context, String value, _) {
+                            checklist.nomeFornecedorCascataDeChocolate =
+                                selectedItem.value.toString();
+                            return DropdownButton<String>(
+                              hint: const Text('Selecione o fornecedor'),
+                              value: (value.isEmpty) ? null : value,
+                              onChanged: (escolha) =>
+                                  selectedItem7.value = escolha.toString(),
+                              items: fornecedores
+                                  .map(
+                                    (opcao) => DropdownMenuItem(
+                                      value: opcao,
+                                      child: Text(opcao),
+                                    ),
+                                  )
+                                  .toList(),
+                            );
+                            //testeSalvamento = testeSalvamento + selectedItem.toString();
+                          }),
                       TextFormField(
                         onChanged: (value) {
                           checklist.telefoneFornecedorCascata = value;
@@ -787,14 +982,24 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
                         decoration: InputDecoration(
                             labelText: 'Telefone do Fornecedor'),
                       ),
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.valorCascata =
-                              double.tryParse(value) ?? 0.0;
-                        },
-                        keyboardType: TextInputType.number,
-                        decoration:
-                            InputDecoration(labelText: 'Valor do Serviço'),
+                      SizedBox(height: 20),
+                      SizedBox(
+                        height: 200,
+                        width: double.infinity,
+                        child: TextFormField(
+                          onChanged: (value) {
+                            checklist.fornecedorCascata = value;
+                          },
+                          decoration: InputDecoration(
+                            filled: true,
+                            labelText: 'Observações sobre o serviço',
+                            border: OutlineInputBorder(),
+                            //contentPadding: EdgeInsets.symmetric(vertical: 100),
+                          ),
+                          maxLines: null,
+                          textAlignVertical: TextAlignVertical.top,
+                          expands: true,
+                        ),
                       ),
                     ],
                   ),
@@ -812,17 +1017,31 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
               ),
               if (checklist.acai)
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: EdgeInsets.symmetric(horizontal: 10.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.fornecedorAcai = value;
-                        },
-                        decoration:
-                            InputDecoration(labelText: 'Nome do Fornecedor'),
-                      ),
+                      ValueListenableBuilder(
+                          valueListenable: selectedItem8,
+                          builder: (BuildContext context, String value, _) {
+                            checklist.nomeFornecedorAcai =
+                                selectedItem.value.toString();
+                            return DropdownButton<String>(
+                              hint: const Text('Selecione o fornecedor'),
+                              value: (value.isEmpty) ? null : value,
+                              onChanged: (escolha) =>
+                                  selectedItem8.value = escolha.toString(),
+                              items: fornecedores
+                                  .map(
+                                    (opcao) => DropdownMenuItem(
+                                      value: opcao,
+                                      child: Text(opcao),
+                                    ),
+                                  )
+                                  .toList(),
+                            );
+                            //testeSalvamento = testeSalvamento + selectedItem.toString();
+                          }),
                       TextFormField(
                         onChanged: (value) {
                           checklist.telefoneFornecedorAcai = value;
@@ -830,13 +1049,24 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
                         decoration: InputDecoration(
                             labelText: 'Telefone do Fornecedor'),
                       ),
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.valorAcai = double.tryParse(value) ?? 0.0;
-                        },
-                        keyboardType: TextInputType.number,
-                        decoration:
-                            InputDecoration(labelText: 'Valor do Serviço'),
+                      SizedBox(height: 20),
+                      SizedBox(
+                        height: 200,
+                        width: double.infinity,
+                        child: TextFormField(
+                          onChanged: (value) {
+                            checklist.fornecedorAcai = value;
+                          },
+                          decoration: InputDecoration(
+                            filled: true,
+                            labelText: 'Observações sobre o serviço',
+                            border: OutlineInputBorder(),
+                            //contentPadding: EdgeInsets.symmetric(vertical: 100),
+                          ),
+                          maxLines: null,
+                          textAlignVertical: TextAlignVertical.top,
+                          expands: true,
+                        ),
                       ),
                     ],
                   ),
@@ -858,17 +1088,31 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
               ),
               if (checklist.buffet)
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: EdgeInsets.symmetric(horizontal: 10.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.fornecedorBuffet = value;
-                        },
-                        decoration:
-                            InputDecoration(labelText: 'Nome do Fornecedor'),
-                      ),
+                      ValueListenableBuilder(
+                          valueListenable: selectedItem9,
+                          builder: (BuildContext context, String value, _) {
+                            checklist.nomeFornecedorBuffet =
+                                selectedItem.value.toString();
+                            return DropdownButton<String>(
+                              hint: const Text('Selecione o fornecedor'),
+                              value: (value.isEmpty) ? null : value,
+                              onChanged: (escolha) =>
+                                  selectedItem9.value = escolha.toString(),
+                              items: fornecedores
+                                  .map(
+                                    (opcao) => DropdownMenuItem(
+                                      value: opcao,
+                                      child: Text(opcao),
+                                    ),
+                                  )
+                                  .toList(),
+                            );
+                            //testeSalvamento = testeSalvamento + selectedItem.toString();
+                          }),
                       TextFormField(
                         onChanged: (value) {
                           checklist.telefoneFornecedorBuffet = value;
@@ -876,40 +1120,24 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
                         decoration: InputDecoration(
                             labelText: 'Telefone do Fornecedor'),
                       ),
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.valorBuffet = double.tryParse(value) ?? 0.0;
-                        },
-                        keyboardType: TextInputType.number,
-                        decoration:
-                            InputDecoration(labelText: 'Valor do Serviço'),
-                      ),
-                      CheckboxListTile(
-                        title: Text('Com Entradas'),
-                        value: checklist.comEntradas,
-                        onChanged: (value) {
-                          setState(() {
-                            checklist.comEntradas = value ?? false;
-                          });
-                        },
-                      ),
-                      CheckboxListTile(
-                        title: Text('Sem Entradas'),
-                        value: checklist.semEntradas,
-                        onChanged: (value) {
-                          setState(() {
-                            checklist.semEntradas = value ?? false;
-                          });
-                        },
-                      ),
-                      CheckboxListTile(
-                        title: Text('Lanche da Madrugada'),
-                        value: checklist.lancheDaMadrugada,
-                        onChanged: (value) {
-                          setState(() {
-                            checklist.lancheDaMadrugada = value ?? false;
-                          });
-                        },
+                      SizedBox(height: 20),
+                      SizedBox(
+                        height: 200,
+                        width: double.infinity,
+                        child: TextFormField(
+                          onChanged: (value) {
+                            checklist.fornecedorBuffet = value;
+                          },
+                          decoration: InputDecoration(
+                            filled: true,
+                            labelText: 'Observações sobre o serviço',
+                            border: OutlineInputBorder(),
+                            //contentPadding: EdgeInsets.symmetric(vertical: 100),
+                          ),
+                          maxLines: null,
+                          textAlignVertical: TextAlignVertical.top,
+                          expands: true,
+                        ),
                       ),
                     ],
                   ),
@@ -931,17 +1159,31 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
               ),
               if (checklist.coquetel)
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: EdgeInsets.symmetric(horizontal: 10.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.fornecedorCoquetel = value;
-                        },
-                        decoration:
-                            InputDecoration(labelText: 'Nome do Fornecedor'),
-                      ),
+                      ValueListenableBuilder(
+                          valueListenable: selectedItem10,
+                          builder: (BuildContext context, String value, _) {
+                            checklist.nomeFornecedorCoquetel =
+                                selectedItem.value.toString();
+                            return DropdownButton<String>(
+                              hint: const Text('Selecione o fornecedor'),
+                              value: (value.isEmpty) ? null : value,
+                              onChanged: (escolha) =>
+                                  selectedItem10.value = escolha.toString(),
+                              items: fornecedores
+                                  .map(
+                                    (opcao) => DropdownMenuItem(
+                                      value: opcao,
+                                      child: Text(opcao),
+                                    ),
+                                  )
+                                  .toList(),
+                            );
+                            //testeSalvamento = testeSalvamento + selectedItem.toString();
+                          }),
                       TextFormField(
                         onChanged: (value) {
                           checklist.telefoneFornecedorCoquetel = value;
@@ -949,38 +1191,24 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
                         decoration: InputDecoration(
                             labelText: 'Telefone do Fornecedor'),
                       ),
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.valorCoquetel =
-                              double.tryParse(value) ?? 0.0;
-                        },
-                        keyboardType: TextInputType.number,
-                        decoration:
-                            InputDecoration(labelText: 'Valor do Serviço'),
-                      ),
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.quantidade = false;
-                        },
-                        decoration: InputDecoration(labelText: 'Quantidade'),
-                      ),
-                      CheckboxListTile(
-                        title: Text('Frito na Hora'),
-                        value: checklist.fritoNaHora,
-                        onChanged: (value) {
-                          setState(() {
-                            checklist.fritoNaHora = value ?? false;
-                          });
-                        },
-                      ),
-                      CheckboxListTile(
-                        title: Text('Assados'),
-                        value: checklist.assados,
-                        onChanged: (value) {
-                          setState(() {
-                            checklist.assados = value ?? false;
-                          });
-                        },
+                      SizedBox(height: 20),
+                      SizedBox(
+                        height: 200,
+                        width: double.infinity,
+                        child: TextFormField(
+                          onChanged: (value) {
+                            checklist.fornecedorCoquetel = value;
+                          },
+                          decoration: InputDecoration(
+                            filled: true,
+                            labelText: 'Observações sobre o serviço',
+                            border: OutlineInputBorder(),
+                            //contentPadding: EdgeInsets.symmetric(vertical: 100),
+                          ),
+                          maxLines: null,
+                          textAlignVertical: TextAlignVertical.top,
+                          expands: true,
+                        ),
                       ),
                     ],
                   ),
@@ -998,17 +1226,31 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
               ),
               if (checklist.boloFake)
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: EdgeInsets.symmetric(horizontal: 10.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.fornecedorBoloFake = value;
-                        },
-                        decoration:
-                            InputDecoration(labelText: 'Nome do Fornecedor'),
-                      ),
+                      ValueListenableBuilder(
+                          valueListenable: selectedItem11,
+                          builder: (BuildContext context, String value, _) {
+                            checklist.nomeFornecedorBoloFake =
+                                selectedItem.value.toString();
+                            return DropdownButton<String>(
+                              hint: const Text('Selecione o fornecedor'),
+                              value: (value.isEmpty) ? null : value,
+                              onChanged: (escolha) =>
+                                  selectedItem11.value = escolha.toString(),
+                              items: fornecedores
+                                  .map(
+                                    (opcao) => DropdownMenuItem(
+                                      value: opcao,
+                                      child: Text(opcao),
+                                    ),
+                                  )
+                                  .toList(),
+                            );
+                            //testeSalvamento = testeSalvamento + selectedItem.toString();
+                          }),
                       TextFormField(
                         onChanged: (value) {
                           checklist.telefoneFornecedorBoloFake = value;
@@ -1016,41 +1258,24 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
                         decoration: InputDecoration(
                             labelText: 'Telefone do Fornecedor'),
                       ),
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.valorBoloFake =
-                              double.tryParse(value) ?? 0.0;
-                        },
-                        keyboardType: TextInputType.number,
-                        decoration:
-                            InputDecoration(labelText: 'Valor do Serviço'),
-                      ),
-                      CheckboxListTile(
-                        title: Text('Verdadeiro'),
-                        value: checklist.verdadeiro,
-                        onChanged: (value) {
-                          setState(() {
-                            checklist.verdadeiro = value ?? false;
-                          });
-                        },
-                      ),
-                      CheckboxListTile(
-                        title: Text('Alugado'),
-                        value: checklist.alugado,
-                        onChanged: (value) {
-                          setState(() {
-                            checklist.alugado = value ?? false;
-                          });
-                        },
-                      ),
-                      CheckboxListTile(
-                        title: Text('Incluso na Decoração'),
-                        value: checklist.inclusoDecoracao,
-                        onChanged: (value) {
-                          setState(() {
-                            checklist.inclusoDecoracao = value ?? false;
-                          });
-                        },
+                      SizedBox(height: 20),
+                      SizedBox(
+                        height: 200,
+                        width: double.infinity,
+                        child: TextFormField(
+                          onChanged: (value) {
+                            checklist.fornecedorBoloFake = value;
+                          },
+                          decoration: InputDecoration(
+                            filled: true,
+                            labelText: 'Observações sobre o serviço',
+                            border: OutlineInputBorder(),
+                            //contentPadding: EdgeInsets.symmetric(vertical: 100),
+                          ),
+                          maxLines: null,
+                          textAlignVertical: TextAlignVertical.top,
+                          expands: true,
+                        ),
                       ),
                     ],
                   ),
@@ -1068,17 +1293,31 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
               ),
               if (checklist.boloCorte)
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: EdgeInsets.symmetric(horizontal: 10.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.fornecedorBoloCorte = value;
-                        },
-                        decoration:
-                            InputDecoration(labelText: 'Nome do Fornecedor'),
-                      ),
+                      ValueListenableBuilder(
+                          valueListenable: selectedItem12,
+                          builder: (BuildContext context, String value, _) {
+                            checklist.nomeFornecedorBoloCorte =
+                                selectedItem.value.toString();
+                            return DropdownButton<String>(
+                              hint: const Text('Selecione o fornecedor'),
+                              value: (value.isEmpty) ? null : value,
+                              onChanged: (escolha) =>
+                                  selectedItem12.value = escolha.toString(),
+                              items: fornecedores
+                                  .map(
+                                    (opcao) => DropdownMenuItem(
+                                      value: opcao,
+                                      child: Text(opcao),
+                                    ),
+                                  )
+                                  .toList(),
+                            );
+                            //testeSalvamento = testeSalvamento + selectedItem.toString();
+                          }),
                       TextFormField(
                         onChanged: (value) {
                           checklist.telefoneFornecedorBoloCorte = value;
@@ -1086,27 +1325,24 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
                         decoration: InputDecoration(
                             labelText: 'Telefone do Fornecedor'),
                       ),
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.valorBoloCorte =
-                              double.tryParse(value) ?? 0.0;
-                        },
-                        keyboardType: TextInputType.number,
-                        decoration:
-                            InputDecoration(labelText: 'Valor do Serviço'),
-                      ),
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.quantidadeKg = false;
-                        },
-                        decoration: InputDecoration(labelText: 'Quantidade KG'),
-                      ),
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.horarioDeEntrega = false;
-                        },
-                        decoration:
-                            InputDecoration(labelText: 'Horário de Chegada'),
+                      SizedBox(height: 20),
+                      SizedBox(
+                        height: 200,
+                        width: double.infinity,
+                        child: TextFormField(
+                          onChanged: (value) {
+                            checklist.fornecedorBoloCorte = value;
+                          },
+                          decoration: InputDecoration(
+                            filled: true,
+                            labelText: 'Observações sobre o serviço',
+                            border: OutlineInputBorder(),
+                            //contentPadding: EdgeInsets.symmetric(vertical: 100),
+                          ),
+                          maxLines: null,
+                          textAlignVertical: TextAlignVertical.top,
+                          expands: true,
+                        ),
                       ),
                     ],
                   ),
@@ -1128,33 +1364,27 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CheckboxListTile(
-                        title: Text('Decoração'),
-                        value: checklist.espatulaDecoracao,
-                        onChanged: (value) {
-                          setState(() {
-                            checklist.espatulaDecoracao = value ?? false;
-                          });
-                        },
-                      ),
-                      CheckboxListTile(
-                        title: Text('Buffet'),
-                        value: checklist.espatulaBuffet,
-                        onChanged: (value) {
-                          setState(() {
-                            checklist.espatulaBuffet = value ?? false;
-                          });
-                        },
-                      ),
-                      CheckboxListTile(
-                        title: Text('Noiva'),
-                        value: checklist.espatulaNoiva,
-                        onChanged: (value) {
-                          setState(() {
-                            checklist.espatulaNoiva = value ?? false;
-                          });
-                        },
-                      ),
+                      ValueListenableBuilder(
+                          valueListenable: selectedItem13,
+                          builder: (BuildContext context, String value, _) {
+                            checklist.espatulaSelecionada =
+                                selectedItem.value.toString();
+                            return DropdownButton<String>(
+                              hint: const Text('Selecione o responsável'),
+                              value: (value.isEmpty) ? null : value,
+                              onChanged: (escolha) =>
+                                  selectedItem13.value = escolha.toString(),
+                              items: selecao
+                                  .map(
+                                    (opcao) => DropdownMenuItem(
+                                      value: opcao,
+                                      child: Text(opcao),
+                                    ),
+                                  )
+                                  .toList(),
+                            );
+                            //testeSalvamento = testeSalvamento + selectedItem.toString();
+                          }),
                     ],
                   ),
                 ),
@@ -1175,33 +1405,27 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CheckboxListTile(
-                        title: Text('Decoração'),
-                        value: checklist.tacasDecoracao,
-                        onChanged: (value) {
-                          setState(() {
-                            checklist.tacasDecoracao = value ?? false;
-                          });
-                        },
-                      ),
-                      CheckboxListTile(
-                        title: Text('Buffet'),
-                        value: checklist.tacasBuffet,
-                        onChanged: (value) {
-                          setState(() {
-                            checklist.tacasBuffet = value ?? false;
-                          });
-                        },
-                      ),
-                      CheckboxListTile(
-                        title: Text('Noiva'),
-                        value: checklist.tacasNoiva,
-                        onChanged: (value) {
-                          setState(() {
-                            checklist.tacasNoiva = value ?? false;
-                          });
-                        },
-                      ),
+                      ValueListenableBuilder(
+                          valueListenable: selectedItem14,
+                          builder: (BuildContext context, String value, _) {
+                            checklist.tacasSelecionada =
+                                selectedItem.value.toString();
+                            return DropdownButton<String>(
+                              hint: const Text('Selecione o responsável'),
+                              value: (value.isEmpty) ? null : value,
+                              onChanged: (escolha) =>
+                                  selectedItem14.value = escolha.toString(),
+                              items: selecao
+                                  .map(
+                                    (opcao) => DropdownMenuItem(
+                                      value: opcao,
+                                      child: Text(opcao),
+                                    ),
+                                  )
+                                  .toList(),
+                            );
+                            //testeSalvamento = testeSalvamento + selectedItem.toString();
+                          }),
                     ],
                   ),
                 ),
@@ -1218,17 +1442,31 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
               ),
               if (checklist.bebidas)
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: EdgeInsets.symmetric(horizontal: 10.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.fornecedorBebidas = value;
-                        },
-                        decoration:
-                            InputDecoration(labelText: 'Nome do Fornecedor'),
-                      ),
+                      ValueListenableBuilder(
+                          valueListenable: selectedItem15,
+                          builder: (BuildContext context, String value, _) {
+                            checklist.nomeFornecedorBebidas =
+                                selectedItem.value.toString();
+                            return DropdownButton<String>(
+                              hint: const Text('Selecione o fornecedor'),
+                              value: (value.isEmpty) ? null : value,
+                              onChanged: (escolha) =>
+                                  selectedItem15.value = escolha.toString(),
+                              items: fornecedores
+                                  .map(
+                                    (opcao) => DropdownMenuItem(
+                                      value: opcao,
+                                      child: Text(opcao),
+                                    ),
+                                  )
+                                  .toList(),
+                            );
+                            //testeSalvamento = testeSalvamento + selectedItem.toString();
+                          }),
                       TextFormField(
                         onChanged: (value) {
                           checklist.telefoneFornecedorBebidas = value;
@@ -1236,36 +1474,24 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
                         decoration: InputDecoration(
                             labelText: 'Telefone do Fornecedor'),
                       ),
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.valorBebidas =
-                              double.tryParse(value) ?? 0.0;
-                        },
-                        keyboardType: TextInputType.number,
-                        decoration:
-                            InputDecoration(labelText: 'Valor do Serviço'),
-                      ),
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.horarioDeEntregaBebidas = false;
-                        },
-                        decoration:
-                            InputDecoration(labelText: 'Horário de Entrega'),
-                      ),
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.qtdeBebidas = false;
-                        },
-                        decoration: InputDecoration(labelText: 'Quantidade'),
-                      ),
-                      CheckboxListTile(
-                        title: Text('Consignado'),
-                        value: checklist.consignado,
-                        onChanged: (value) {
-                          setState(() {
-                            checklist.consignado = value ?? false;
-                          });
-                        },
+                      SizedBox(height: 20),
+                      SizedBox(
+                        height: 200,
+                        width: double.infinity,
+                        child: TextFormField(
+                          onChanged: (value) {
+                            checklist.fornecedorBebidas = value;
+                          },
+                          decoration: InputDecoration(
+                            filled: true,
+                            labelText: 'Observações sobre o serviço',
+                            border: OutlineInputBorder(),
+                            //contentPadding: EdgeInsets.symmetric(vertical: 100),
+                          ),
+                          maxLines: null,
+                          textAlignVertical: TextAlignVertical.top,
+                          expands: true,
+                        ),
                       ),
                     ],
                   ),
@@ -1283,17 +1509,31 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
               ),
               if (checklist.chopp)
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: EdgeInsets.symmetric(horizontal: 10.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.fornecedorChopp = value;
-                        },
-                        decoration:
-                            InputDecoration(labelText: 'Nome do Fornecedor'),
-                      ),
+                      ValueListenableBuilder(
+                          valueListenable: selectedItem16,
+                          builder: (BuildContext context, String value, _) {
+                            checklist.nomeFornecedorChopp =
+                                selectedItem.value.toString();
+                            return DropdownButton<String>(
+                              hint: const Text('Selecione o fornecedor'),
+                              value: (value.isEmpty) ? null : value,
+                              onChanged: (escolha) =>
+                                  selectedItem16.value = escolha.toString(),
+                              items: fornecedores
+                                  .map(
+                                    (opcao) => DropdownMenuItem(
+                                      value: opcao,
+                                      child: Text(opcao),
+                                    ),
+                                  )
+                                  .toList(),
+                            );
+                            //testeSalvamento = testeSalvamento + selectedItem.toString();
+                          }),
                       TextFormField(
                         onChanged: (value) {
                           checklist.telefoneFornecedorChopp = value;
@@ -1301,28 +1541,24 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
                         decoration: InputDecoration(
                             labelText: 'Telefone do Fornecedor'),
                       ),
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.valorChopp = double.tryParse(value) ?? 0.0;
-                        },
-                        keyboardType: TextInputType.number,
-                        decoration:
-                            InputDecoration(labelText: 'Valor do Serviço'),
-                      ),
-                      //Quantidade de Horário de Entrega
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.qtdeChopp = false;
-                        },
-                        decoration:
-                            InputDecoration(labelText: 'Quantidade de Chopp'),
-                      ),
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.horarioEntregaChopp = false;
-                        },
-                        decoration:
-                            InputDecoration(labelText: 'Horário de Entrega'),
+                      SizedBox(height: 20),
+                      SizedBox(
+                        height: 200,
+                        width: double.infinity,
+                        child: TextFormField(
+                          onChanged: (value) {
+                            checklist.fornecedorChopp = value;
+                          },
+                          decoration: InputDecoration(
+                            filled: true,
+                            labelText: 'Observações sobre o serviço',
+                            border: OutlineInputBorder(),
+                            //contentPadding: EdgeInsets.symmetric(vertical: 100),
+                          ),
+                          maxLines: null,
+                          textAlignVertical: TextAlignVertical.top,
+                          expands: true,
+                        ),
                       ),
                     ],
                   ),
@@ -1339,17 +1575,31 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
               ),
               if (checklist.dj)
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: EdgeInsets.symmetric(horizontal: 10.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.dj = false;
-                        },
-                        decoration:
-                            InputDecoration(labelText: 'Nome do Fornecedor'),
-                      ),
+                      ValueListenableBuilder(
+                          valueListenable: selectedItem17,
+                          builder: (BuildContext context, String value, _) {
+                            checklist.nomeFornecedorDJ =
+                                selectedItem.value.toString();
+                            return DropdownButton<String>(
+                              hint: const Text('Selecione o fornecedor'),
+                              value: (value.isEmpty) ? null : value,
+                              onChanged: (escolha) =>
+                                  selectedItem17.value = escolha.toString(),
+                              items: fornecedores
+                                  .map(
+                                    (opcao) => DropdownMenuItem(
+                                      value: opcao,
+                                      child: Text(opcao),
+                                    ),
+                                  )
+                                  .toList(),
+                            );
+                            //testeSalvamento = testeSalvamento + selectedItem.toString();
+                          }),
                       TextFormField(
                         onChanged: (value) {
                           checklist.telefoneFornecedorDJ = value;
@@ -1357,40 +1607,24 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
                         decoration: InputDecoration(
                             labelText: 'Telefone do Fornecedor'),
                       ),
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.valorDJ = double.tryParse(value) ?? 0.0;
-                        },
-                        keyboardType: TextInputType.number,
-                        decoration:
-                            InputDecoration(labelText: 'Valor do Serviço'),
-                      ),
-                      CheckboxListTile(
-                        title: Text('Iluminação'),
-                        value: checklist.iluminacao,
-                        onChanged: (value) {
-                          setState(() {
-                            checklist.iluminacao = value ?? false;
-                          });
-                        },
-                      ),
-                      CheckboxListTile(
-                        title: Text('Com Cerimônia'),
-                        value: checklist.comCerimonia,
-                        onChanged: (value) {
-                          setState(() {
-                            checklist.comCerimonia = value ?? false;
-                          });
-                        },
-                      ),
-                      CheckboxListTile(
-                        title: Text('Somente Recepção'),
-                        value: checklist.somenteRecepcao,
-                        onChanged: (value) {
-                          setState(() {
-                            checklist.somenteRecepcao = value ?? false;
-                          });
-                        },
+                      SizedBox(height: 20),
+                      SizedBox(
+                        height: 200,
+                        width: double.infinity,
+                        child: TextFormField(
+                          onChanged: (value) {
+                            checklist.telefoneFornecedorDJ = value;
+                          },
+                          decoration: InputDecoration(
+                            filled: true,
+                            labelText: 'Observações sobre o serviço',
+                            border: OutlineInputBorder(),
+                            //contentPadding: EdgeInsets.symmetric(vertical: 100),
+                          ),
+                          maxLines: null,
+                          textAlignVertical: TextAlignVertical.top,
+                          expands: true,
+                        ),
                       ),
                     ],
                   ),
@@ -1408,17 +1642,31 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
               ),
               if (checklist.bartander)
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: EdgeInsets.symmetric(horizontal: 10.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.fornecedorBartander = value;
-                        },
-                        decoration:
-                            InputDecoration(labelText: 'Nome do Fornecedor'),
-                      ),
+                      ValueListenableBuilder(
+                          valueListenable: selectedItem18,
+                          builder: (BuildContext context, String value, _) {
+                            checklist.nomeFornecedorBartender =
+                                selectedItem.value.toString();
+                            return DropdownButton<String>(
+                              hint: const Text('Selecione o fornecedor'),
+                              value: (value.isEmpty) ? null : value,
+                              onChanged: (escolha) =>
+                                  selectedItem18.value = escolha.toString(),
+                              items: fornecedores
+                                  .map(
+                                    (opcao) => DropdownMenuItem(
+                                      value: opcao,
+                                      child: Text(opcao),
+                                    ),
+                                  )
+                                  .toList(),
+                            );
+                            //testeSalvamento = testeSalvamento + selectedItem.toString();
+                          }),
                       TextFormField(
                         onChanged: (value) {
                           checklist.telefoneFornecedorBartander = value;
@@ -1426,14 +1674,24 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
                         decoration: InputDecoration(
                             labelText: 'Telefone do Fornecedor'),
                       ),
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.valorBartander =
-                              double.tryParse(value) ?? 0.0;
-                        },
-                        keyboardType: TextInputType.number,
-                        decoration:
-                            InputDecoration(labelText: 'Valor do Serviço'),
+                      SizedBox(height: 20),
+                      SizedBox(
+                        height: 200,
+                        width: double.infinity,
+                        child: TextFormField(
+                          onChanged: (value) {
+                            checklist.fornecedorBartander = value;
+                          },
+                          decoration: InputDecoration(
+                            filled: true,
+                            labelText: 'Observações sobre o serviço',
+                            border: OutlineInputBorder(),
+                            //contentPadding: EdgeInsets.symmetric(vertical: 100),
+                          ),
+                          maxLines: null,
+                          textAlignVertical: TextAlignVertical.top,
+                          expands: true,
+                        ),
                       ),
                     ],
                   ),
@@ -1451,17 +1709,31 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
               ),
               if (checklist.pista)
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: EdgeInsets.symmetric(horizontal: 10.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.fornecedorPista = value;
-                        },
-                        decoration:
-                            InputDecoration(labelText: 'Nome do Fornecedor'),
-                      ),
+                      ValueListenableBuilder(
+                          valueListenable: selectedItem19,
+                          builder: (BuildContext context, String value, _) {
+                            checklist.nomeFornecedorPista =
+                                selectedItem.value.toString();
+                            return DropdownButton<String>(
+                              hint: const Text('Selecione o fornecedor'),
+                              value: (value.isEmpty) ? null : value,
+                              onChanged: (escolha) =>
+                                  selectedItem19.value = escolha.toString(),
+                              items: fornecedores
+                                  .map(
+                                    (opcao) => DropdownMenuItem(
+                                      value: opcao,
+                                      child: Text(opcao),
+                                    ),
+                                  )
+                                  .toList(),
+                            );
+                            //testeSalvamento = testeSalvamento + selectedItem.toString();
+                          }),
                       TextFormField(
                         onChanged: (value) {
                           checklist.telefoneFornecedorPista = value;
@@ -1469,13 +1741,24 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
                         decoration: InputDecoration(
                             labelText: 'Telefone do Fornecedor'),
                       ),
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.valorPista = double.tryParse(value) ?? 0.0;
-                        },
-                        keyboardType: TextInputType.number,
-                        decoration:
-                            InputDecoration(labelText: 'Valor do Serviço'),
+                      SizedBox(height: 20),
+                      SizedBox(
+                        height: 200,
+                        width: double.infinity,
+                        child: TextFormField(
+                          onChanged: (value) {
+                            checklist.fornecedorPista = value;
+                          },
+                          decoration: InputDecoration(
+                            filled: true,
+                            labelText: 'Observações sobre o serviço',
+                            border: OutlineInputBorder(),
+                            //contentPadding: EdgeInsets.symmetric(vertical: 100),
+                          ),
+                          maxLines: null,
+                          textAlignVertical: TextAlignVertical.top,
+                          expands: true,
+                        ),
                       ),
                     ],
                   ),
@@ -1491,6 +1774,34 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
                   });
                 },
               ),
+              if (checklist.entretenimentos)
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 20),
+                      SizedBox(
+                        height: 200,
+                        width: double.infinity,
+                        child: TextFormField(
+                          onChanged: (value) {
+                            checklist.fornecedorEntretenimentos = value;
+                          },
+                          decoration: InputDecoration(
+                            filled: true,
+                            labelText: 'Observações sobre o serviço',
+                            border: OutlineInputBorder(),
+                            //contentPadding: EdgeInsets.symmetric(vertical: 100),
+                          ),
+                          maxLines: null,
+                          textAlignVertical: TextAlignVertical.top,
+                          expands: true,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               /* Terminar a lógica aqui */
 
               /* Verifica se vai contratar o serviço de maquiagem */
@@ -1505,17 +1816,31 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
               ),
               if (checklist.maquiagem)
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: EdgeInsets.symmetric(horizontal: 10.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.fornecedorMaquiagem = value;
-                        },
-                        decoration:
-                            InputDecoration(labelText: 'Nome do Fornecedor'),
-                      ),
+                      ValueListenableBuilder(
+                          valueListenable: selectedItem20,
+                          builder: (BuildContext context, String value, _) {
+                            checklist.nomeFornecedorMaquiagem =
+                                selectedItem.value.toString();
+                            return DropdownButton<String>(
+                              hint: const Text('Selecione o fornecedor'),
+                              value: (value.isEmpty) ? null : value,
+                              onChanged: (escolha) =>
+                                  selectedItem20.value = escolha.toString(),
+                              items: fornecedores
+                                  .map(
+                                    (opcao) => DropdownMenuItem(
+                                      value: opcao,
+                                      child: Text(opcao),
+                                    ),
+                                  )
+                                  .toList(),
+                            );
+                            //testeSalvamento = testeSalvamento + selectedItem.toString();
+                          }),
                       TextFormField(
                         onChanged: (value) {
                           checklist.telefoneFornecedorMaquiagem = value;
@@ -1523,32 +1848,24 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
                         decoration: InputDecoration(
                             labelText: 'Telefone do Fornecedor'),
                       ),
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.valorMaquiagem =
-                              double.tryParse(value) ?? 0.0;
-                        },
-                        keyboardType: TextInputType.number,
-                        decoration:
-                            InputDecoration(labelText: 'Valor do Serviço'),
-                      ),
-                      CheckboxListTile(
-                        title: Text('Maquiagem com Prévia'),
-                        value: checklist.maquiagemComPrevia,
-                        onChanged: (value) {
-                          setState(() {
-                            checklist.maquiagemComPrevia = value ?? false;
-                          });
-                        },
-                      ),
-                      CheckboxListTile(
-                        title: Text('Maquiagem sem Prévia'),
-                        value: checklist.maquiagemSemPrevia,
-                        onChanged: (value) {
-                          setState(() {
-                            checklist.maquiagemSemPrevia = value ?? false;
-                          });
-                        },
+                      SizedBox(height: 20),
+                      SizedBox(
+                        height: 200,
+                        width: double.infinity,
+                        child: TextFormField(
+                          onChanged: (value) {
+                            checklist.fornecedorMaquiagem = value;
+                          },
+                          decoration: InputDecoration(
+                            filled: true,
+                            labelText: 'Observações sobre o serviço',
+                            border: OutlineInputBorder(),
+                            //contentPadding: EdgeInsets.symmetric(vertical: 100),
+                          ),
+                          maxLines: null,
+                          textAlignVertical: TextAlignVertical.top,
+                          expands: true,
+                        ),
                       ),
                     ],
                   ),
@@ -1566,17 +1883,31 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
               ),
               if (checklist.penteado)
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: EdgeInsets.symmetric(horizontal: 10.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.fornecedorPenteado = value;
-                        },
-                        decoration:
-                            InputDecoration(labelText: 'Nome do Fornecedor'),
-                      ),
+                      ValueListenableBuilder(
+                          valueListenable: selectedItem21,
+                          builder: (BuildContext context, String value, _) {
+                            checklist.nomeFornecedorPenteado =
+                                selectedItem.value.toString();
+                            return DropdownButton<String>(
+                              hint: const Text('Selecione o fornecedor'),
+                              value: (value.isEmpty) ? null : value,
+                              onChanged: (escolha) =>
+                                  selectedItem21.value = escolha.toString(),
+                              items: fornecedores
+                                  .map(
+                                    (opcao) => DropdownMenuItem(
+                                      value: opcao,
+                                      child: Text(opcao),
+                                    ),
+                                  )
+                                  .toList(),
+                            );
+                            //testeSalvamento = testeSalvamento + selectedItem.toString();
+                          }),
                       TextFormField(
                         onChanged: (value) {
                           checklist.telefoneFornecedorPenteado = value;
@@ -1584,32 +1915,24 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
                         decoration: InputDecoration(
                             labelText: 'Telefone do Fornecedor'),
                       ),
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.valorPenteado =
-                              double.tryParse(value) ?? 0.0;
-                        },
-                        keyboardType: TextInputType.number,
-                        decoration:
-                            InputDecoration(labelText: 'Valor do Serviço'),
-                      ),
-                      CheckboxListTile(
-                        title: Text('Penteado com Prévia'),
-                        value: checklist.penteadoComPrevia,
-                        onChanged: (value) {
-                          setState(() {
-                            checklist.penteadoComPrevia = value ?? false;
-                          });
-                        },
-                      ),
-                      CheckboxListTile(
-                        title: Text('Penteado sem Prévia'),
-                        value: checklist.penteadoSemPrevia,
-                        onChanged: (value) {
-                          setState(() {
-                            checklist.penteadoSemPrevia = value ?? false;
-                          });
-                        },
+                      SizedBox(height: 20),
+                      SizedBox(
+                        height: 200,
+                        width: double.infinity,
+                        child: TextFormField(
+                          onChanged: (value) {
+                            checklist.fornecedorPenteado = value;
+                          },
+                          decoration: InputDecoration(
+                            filled: true,
+                            labelText: 'Observações sobre o serviço',
+                            border: OutlineInputBorder(),
+                            //contentPadding: EdgeInsets.symmetric(vertical: 100),
+                          ),
+                          maxLines: null,
+                          textAlignVertical: TextAlignVertical.top,
+                          expands: true,
+                        ),
                       ),
                     ],
                   ),
@@ -1631,38 +1954,71 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.fornecedorVestido = value;
-                        },
-                        decoration:
-                            InputDecoration(labelText: 'Nome do Fornecedor'),
-                      ),
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.telefoneFornecedorVestido = value;
-                        },
-                        decoration: InputDecoration(
-                            labelText: 'Telefone do Fornecedor'),
-                      ),
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.valorVestido =
-                              double.tryParse(value) ?? 0.0;
-                        },
-                        keyboardType: TextInputType.number,
-                        decoration:
-                            InputDecoration(labelText: 'Valor do Serviço'),
-                      ),
                       CheckboxListTile(
                         title: Text('Alugado'),
-                        value: checklist.alugado,
+                        value: checklist.vestidoAlugado,
                         onChanged: (value) {
                           setState(() {
-                            checklist.alugado = value ?? false;
+                            checklist.vestidoAlugado = value ?? false;
                           });
                         },
                       ),
+                      if (checklist.vestidoAlugado)
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ValueListenableBuilder(
+                                  valueListenable: selectedItem22,
+                                  builder:
+                                      (BuildContext context, String value, _) {
+                                    return DropdownButton<String>(
+                                      hint:
+                                          const Text('Selecione o fornecedor'),
+                                      value: (value.isEmpty) ? null : value,
+                                      onChanged: (escolha) => selectedItem22
+                                          .value = escolha.toString(),
+                                      items: fornecedores
+                                          .map(
+                                            (opcao) => DropdownMenuItem(
+                                              value: opcao,
+                                              child: Text(opcao),
+                                            ),
+                                          )
+                                          .toList(),
+                                    );
+                                    //testeSalvamento = testeSalvamento + selectedItem.toString();
+                                  }),
+                              TextFormField(
+                                onChanged: (value) {
+                                  checklist.telefoneFornecedorVestido = value;
+                                },
+                                decoration: InputDecoration(
+                                    labelText: 'Telefone do Fornecedor'),
+                              ),
+                              SizedBox(height: 20),
+                              SizedBox(
+                                height: 200,
+                                width: double.infinity,
+                                child: TextFormField(
+                                  onChanged: (value) {
+                                    checklist.fornecedorVestido = value;
+                                  },
+                                  decoration: InputDecoration(
+                                    filled: true,
+                                    labelText: 'Observações sobre o serviço',
+                                    border: OutlineInputBorder(),
+                                    //contentPadding: EdgeInsets.symmetric(vertical: 100),
+                                  ),
+                                  maxLines: null,
+                                  textAlignVertical: TextAlignVertical.top,
+                                  expands: true,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       CheckboxListTile(
                         title: Text('Confecção Própria'),
                         value: checklist.confeccaoPropria,
@@ -1688,17 +2044,31 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
               ),
               if (checklist.plaquinhas)
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: EdgeInsets.symmetric(horizontal: 10.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.fornecedorPlaquinhas = value;
-                        },
-                        decoration:
-                            InputDecoration(labelText: 'Nome do Fornecedor'),
-                      ),
+                      ValueListenableBuilder(
+                          valueListenable: selectedItem23,
+                          builder: (BuildContext context, String value, _) {
+                            checklist.nomeFornecedorPlaquinhas =
+                                selectedItem.value.toString();
+                            return DropdownButton<String>(
+                              hint: const Text('Selecione o fornecedor'),
+                              value: (value.isEmpty) ? null : value,
+                              onChanged: (escolha) =>
+                                  selectedItem23.value = escolha.toString(),
+                              items: fornecedores
+                                  .map(
+                                    (opcao) => DropdownMenuItem(
+                                      value: opcao,
+                                      child: Text(opcao),
+                                    ),
+                                  )
+                                  .toList(),
+                            );
+                            //testeSalvamento = testeSalvamento + selectedItem.toString();
+                          }),
                       TextFormField(
                         onChanged: (value) {
                           checklist.telefoneFornecedorPlaquinhas = value;
@@ -1706,14 +2076,24 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
                         decoration: InputDecoration(
                             labelText: 'Telefone do Fornecedor'),
                       ),
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.valorPlaquinhas =
-                              double.tryParse(value) ?? 0.0;
-                        },
-                        keyboardType: TextInputType.number,
-                        decoration:
-                            InputDecoration(labelText: 'Valor do Serviço'),
+                      SizedBox(height: 20),
+                      SizedBox(
+                        height: 200,
+                        width: double.infinity,
+                        child: TextFormField(
+                          onChanged: (value) {
+                            checklist.fornecedorPlaquinhas = value;
+                          },
+                          decoration: InputDecoration(
+                            filled: true,
+                            labelText: 'Observações sobre o serviço',
+                            border: OutlineInputBorder(),
+                            //contentPadding: EdgeInsets.symmetric(vertical: 100),
+                          ),
+                          maxLines: null,
+                          textAlignVertical: TextAlignVertical.top,
+                          expands: true,
+                        ),
                       ),
                     ],
                   ),
@@ -1731,17 +2111,31 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
               ),
               if (checklist.portaAlianca)
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: EdgeInsets.symmetric(horizontal: 10.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.fornecedorPortaAlianca = value;
-                        },
-                        decoration:
-                            InputDecoration(labelText: 'Nome do Fornecedor'),
-                      ),
+                      ValueListenableBuilder(
+                          valueListenable: selectedItem24,
+                          builder: (BuildContext context, String value, _) {
+                            checklist.nomeFornecedorPortaAlianca =
+                                selectedItem.value.toString();
+                            return DropdownButton<String>(
+                              hint: const Text('Selecione o fornecedor'),
+                              value: (value.isEmpty) ? null : value,
+                              onChanged: (escolha) =>
+                                  selectedItem24.value = escolha.toString(),
+                              items: fornecedores
+                                  .map(
+                                    (opcao) => DropdownMenuItem(
+                                      value: opcao,
+                                      child: Text(opcao),
+                                    ),
+                                  )
+                                  .toList(),
+                            );
+                            //testeSalvamento = testeSalvamento + selectedItem.toString();
+                          }),
                       TextFormField(
                         onChanged: (value) {
                           checklist.telefoneFornecedorPortaAlianca = value;
@@ -1749,14 +2143,24 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
                         decoration: InputDecoration(
                             labelText: 'Telefone do Fornecedor'),
                       ),
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.valorPortaAlianca =
-                              double.tryParse(value) ?? 0.0;
-                        },
-                        keyboardType: TextInputType.number,
-                        decoration:
-                            InputDecoration(labelText: 'Valor do Serviço'),
+                      SizedBox(height: 20),
+                      SizedBox(
+                        height: 200,
+                        width: double.infinity,
+                        child: TextFormField(
+                          onChanged: (value) {
+                            checklist.fornecedorPortaAlianca = value;
+                          },
+                          decoration: InputDecoration(
+                            filled: true,
+                            labelText: 'Observações sobre o serviço',
+                            border: OutlineInputBorder(),
+                            //contentPadding: EdgeInsets.symmetric(vertical: 100),
+                          ),
+                          maxLines: null,
+                          textAlignVertical: TextAlignVertical.top,
+                          expands: true,
+                        ),
                       ),
                     ],
                   ),
@@ -1774,17 +2178,31 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
               ),
               if (checklist.cestaFlorista)
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: EdgeInsets.symmetric(horizontal: 10.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.fornecedorCestaFlorista = value;
-                        },
-                        decoration:
-                            InputDecoration(labelText: 'Nome do Fornecedor'),
-                      ),
+                      ValueListenableBuilder(
+                          valueListenable: selectedItem25,
+                          builder: (BuildContext context, String value, _) {
+                            checklist.nomeFornecedorCestaFlorista =
+                                selectedItem.value.toString();
+                            return DropdownButton<String>(
+                              hint: const Text('Selecione o fornecedor'),
+                              value: (value.isEmpty) ? null : value,
+                              onChanged: (escolha) =>
+                                  selectedItem25.value = escolha.toString(),
+                              items: fornecedores
+                                  .map(
+                                    (opcao) => DropdownMenuItem(
+                                      value: opcao,
+                                      child: Text(opcao),
+                                    ),
+                                  )
+                                  .toList(),
+                            );
+                            //testeSalvamento = testeSalvamento + selectedItem.toString();
+                          }),
                       TextFormField(
                         onChanged: (value) {
                           checklist.telefoneFornecedorCestaFlorista = value;
@@ -1792,14 +2210,24 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
                         decoration: InputDecoration(
                             labelText: 'Telefone do Fornecedor'),
                       ),
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.valorCestaFlorista =
-                              double.tryParse(value) ?? 0.0;
-                        },
-                        keyboardType: TextInputType.number,
-                        decoration:
-                            InputDecoration(labelText: 'Valor do Serviço'),
+                      SizedBox(height: 20),
+                      SizedBox(
+                        height: 200,
+                        width: double.infinity,
+                        child: TextFormField(
+                          onChanged: (value) {
+                            checklist.fornecedorCestaFlorista = value;
+                          },
+                          decoration: InputDecoration(
+                            filled: true,
+                            labelText: 'Observações sobre o serviço',
+                            border: OutlineInputBorder(),
+                            //contentPadding: EdgeInsets.symmetric(vertical: 100),
+                          ),
+                          maxLines: null,
+                          textAlignVertical: TextAlignVertical.top,
+                          expands: true,
+                        ),
                       ),
                     ],
                   ),
@@ -1817,32 +2245,56 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
               ),
               if (checklist.carroNoiva)
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: EdgeInsets.symmetric(horizontal: 10.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      ValueListenableBuilder(
+                          valueListenable: selectedItem26,
+                          builder: (BuildContext context, String value, _) {
+                            checklist.nomeFornecedorCarroNoiva =
+                                selectedItem.value.toString();
+                            return DropdownButton<String>(
+                              hint: const Text('Selecione o fornecedor'),
+                              value: (value.isEmpty) ? null : value,
+                              onChanged: (escolha) =>
+                                  selectedItem26.value = escolha.toString(),
+                              items: fornecedores
+                                  .map(
+                                    (opcao) => DropdownMenuItem(
+                                      value: opcao,
+                                      child: Text(opcao),
+                                    ),
+                                  )
+                                  .toList(),
+                            );
+                            //testeSalvamento = testeSalvamento + selectedItem.toString();
+                          }),
                       TextFormField(
                         onChanged: (value) {
-                          checklist.fornecedorCarroNoiva = value;
-                        },
-                        decoration:
-                            InputDecoration(labelText: 'Nome do Fornecedor'),
-                      ),
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.telefoneFornecedorCarroNoiva = value;
+                          checklist.telefoneFornecedorPista = value;
                         },
                         decoration: InputDecoration(
                             labelText: 'Telefone do Fornecedor'),
                       ),
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.valorCarroNoiva =
-                              double.tryParse(value) ?? 0.0;
-                        },
-                        keyboardType: TextInputType.number,
-                        decoration:
-                            InputDecoration(labelText: 'Valor do Serviço'),
+                      SizedBox(height: 20),
+                      SizedBox(
+                        height: 200,
+                        width: double.infinity,
+                        child: TextFormField(
+                          onChanged: (value) {
+                            checklist.fornecedorPista = value;
+                          },
+                          decoration: InputDecoration(
+                            filled: true,
+                            labelText: 'Observações sobre o serviço',
+                            border: OutlineInputBorder(),
+                            //contentPadding: EdgeInsets.symmetric(vertical: 100),
+                          ),
+                          maxLines: null,
+                          textAlignVertical: TextAlignVertical.top,
+                          expands: true,
+                        ),
                       ),
                     ],
                   ),
@@ -1864,29 +2316,6 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.fornecedorTrajeNoivo = value;
-                        },
-                        decoration:
-                            InputDecoration(labelText: 'Nome do Fornecedor'),
-                      ),
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.telefoneFornecedorTrajeNoivo = value;
-                        },
-                        decoration: InputDecoration(
-                            labelText: 'Telefone do Fornecedor'),
-                      ),
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.valorTrajeNoivo =
-                              double.tryParse(value) ?? 0.0;
-                        },
-                        keyboardType: TextInputType.number,
-                        decoration:
-                            InputDecoration(labelText: 'Valor do Serviço'),
-                      ),
                       CheckboxListTile(
                         title: Text('Alugado'),
                         value: checklist.trajeNoivoAlugado,
@@ -1896,6 +2325,62 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
                           });
                         },
                       ),
+                      if (checklist.trajeNoivoAlugado)
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ValueListenableBuilder(
+                                  valueListenable: selectedItem27,
+                                  builder:
+                                      (BuildContext context, String value, _) {
+                                    return DropdownButton<String>(
+                                      hint:
+                                          const Text('Selecione o fornecedor'),
+                                      value: (value.isEmpty) ? null : value,
+                                      onChanged: (escolha) => selectedItem27
+                                          .value = escolha.toString(),
+                                      items: fornecedores
+                                          .map(
+                                            (opcao) => DropdownMenuItem(
+                                              value: opcao,
+                                              child: Text(opcao),
+                                            ),
+                                          )
+                                          .toList(),
+                                    );
+                                    //testeSalvamento = testeSalvamento + selectedItem.toString();
+                                  }),
+                              TextFormField(
+                                onChanged: (value) {
+                                  checklist.telefoneFornecedorPista = value;
+                                },
+                                decoration: InputDecoration(
+                                    labelText: 'Telefone do Fornecedor'),
+                              ),
+                              SizedBox(height: 20),
+                              SizedBox(
+                                height: 200,
+                                width: double.infinity,
+                                child: TextFormField(
+                                  onChanged: (value) {
+                                    checklist.fornecedorPista = value;
+                                  },
+                                  decoration: InputDecoration(
+                                    filled: true,
+                                    labelText: 'Observações sobre o serviço',
+                                    border: OutlineInputBorder(),
+                                    //contentPadding: EdgeInsets.symmetric(vertical: 100),
+                                  ),
+                                  maxLines: null,
+                                  textAlignVertical: TextAlignVertical.top,
+                                  expands: true,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       CheckboxListTile(
                         title: Text('Confecção Própria'),
                         value: checklist.trajeConfeccaoPropria,
@@ -1905,19 +2390,14 @@ class _ChecklistCasamentoScreenState extends State<ChecklistCasamentoScreen> {
                           });
                         },
                       ),
-                      TextFormField(
-                        onChanged: (value) {
-                          checklist.corTrajeNoivo = false;
-                        },
-                        decoration:
-                            InputDecoration(labelText: 'Cor Traje Noivo'),
-                      ),
                     ],
                   ),
                 ),
               SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  saveData();
+                },
                 child: Text('Salvar Checklist'),
               ),
             ],
